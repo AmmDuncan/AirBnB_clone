@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 
 
 def getClasses():
+    """Get available classes"""
     classes = [BaseModel]
     available_classes = [*map(lambda c: c.__name__, classes)]
     class_dict = {name: classes[index]
