@@ -23,15 +23,14 @@ class BaseModel:
         if not args and not kwargs:
             storage.new(self.to_dict())
         for key, value in kwargs.items():
-            match(key):
-                case 'id':
-                    self.id = value
-                case 'created_at':
-                    self.created_at = datetime.strptime(
-                        value, "%Y-%m-%dT%H:%M:%S.%f")
-                case 'updated_at':
-                    self.updated_at = datetime.strptime(
-                        value, "%Y-%m-%dT%H:%M:%S.%f")
+            if key == 'id':
+                self.id = value
+            elif key == 'created_at':
+                self.created_at = datetime.strptime(
+                    value, "%Y-%m-%dT%H:%M:%S.%f")
+            elif key == 'updated_at':
+                self.updated_at = datetime.strptime(
+                    value, "%Y-%m-%dT%H:%M:%S.%f")
 
     def __str__(self):
         """Informal string representation of BaseModel instances"""
