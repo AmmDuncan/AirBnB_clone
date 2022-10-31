@@ -64,4 +64,5 @@ class BaseModel:
         return inst_obj
 
     def __setitem__(self, key, value):
+        """Set item on instance"""
         self.__setattr__(key, value)

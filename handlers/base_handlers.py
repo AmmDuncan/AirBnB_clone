@@ -3,11 +3,12 @@
 import re
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 
 def getClasses():
     """Get available classes"""
-    classes = [BaseModel]
+    classes = [BaseModel, User]
     available_classes = [*map(lambda c: c.__name__, classes)]
     class_dict = {name: classes[index]
                   for (index, name) in enumerate(available_classes)}
