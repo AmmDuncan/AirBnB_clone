@@ -37,8 +37,24 @@ class FileStorage:
     def reload(self):
         """Deserialize json file to objects"""
         try:
-            from models.base_model import BaseModel
+            [_, _, classes_dict] = getClasses()
             with open(self.__file_path, 'r') as file:
-                self.__objects = json.loads(file.read(), cls=BaseModel)
+                dicts = json.loads(file.read())
+                self.__objects = {}
+                for key in dicts.keys():
+                    value = dicts[key]
+                    Class = classes_dict[value['__class__']]
+                    self.__objects[key] = Class(**value)
         except FileNotFoundError:
             pass
+
+
+def getClasses():
+    """Get available classes"""
+    from models.base_model import BaseModel
+    from models.user import User
+    classes = [BaseModel, User]
+    available_classes = [*map(lambda c: c.__name__, classes)]
+    class_dict = {name: classes[index]
+                  for (index, name) in enumerate(available_classes)}
+    return [classes, available_classes, class_dict]

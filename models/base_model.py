@@ -45,7 +45,7 @@ class BaseModel:
         dicts = json.loads(s)
         instances = {}
         for key in dicts.keys():
-            instances[key] = BaseModel(**dicts[key])
+            instances[key] = self.__class__(**dicts[key])
         return instances
 
     def save(self):
