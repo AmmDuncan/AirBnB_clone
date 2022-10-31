@@ -117,7 +117,7 @@ def handleAll(str_params):
 
 def handleUpdate(str_params):
     """Update a field on an instance in storage"""
-    params = re.findall("\"[^\"]+\"|[^\s]+", str_params)
+    params = re.findall(r"\"[^\"]+\"|[^\s]+", str_params)
     params = [*map(lambda w: w.strip('"'), params)]
     classFound = checkClass(params)
     if classFound:
