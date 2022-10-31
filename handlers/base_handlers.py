@@ -102,20 +102,21 @@ def handleDestroy(str_params):
 def handleAll(str_params):
     """Prints all string representation of all instances \
         based or not on the class name"""
-    instances = storage.all()
+    dicts_dict = storage.all()
+    instances = dicts_dict.values()
     if str_params:
         classFound = getClass(str_params.split(" ")[0])
         if not classFound:
             return
         instances = [*filter(lambda d: d.__class__.__name__
                              == str_params, instances)]
-    instance_strings = [*map(lambda i: str(i), instances.values())]
+    instance_strings = [*map(lambda i: str(i), instances)]
     print(instance_strings)
 
 
 def handleUpdate(str_params):
     """Update a field on an instance in storage"""
-    params = re.findall(r"\"[^\"]+\"|[^\s]+", str_params)
+    params = re.findall("\"[^\"]+\"|[^\s]+", str_params)
     params = [*map(lambda w: w.strip('"'), params)]
     classFound = checkClass(params)
     if classFound:
