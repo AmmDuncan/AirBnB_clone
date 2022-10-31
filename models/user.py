@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Define User Model"""
-import email
 from models.base_model import BaseModel
 
 
