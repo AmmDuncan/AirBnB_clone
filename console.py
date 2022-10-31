@@ -5,7 +5,8 @@ from handlers.base_handlers import (
     handleAll,
     handleCreate,
     handleDestroy,
-    handleShow
+    handleShow,
+    handleUpdate
 )
 
 
@@ -47,6 +48,11 @@ class HBNBCommand(cmd.Cmd):
         """all [<class name>] {Show all instances [of a class]}
         """
         handleAll(str_params)
+
+    def do_update(self, str_params):
+        """update <class name> <id> <field> "<value>" {Update an instance}
+        """
+        handleUpdate(str_params)
 
 
 if __name__ == '__main__':

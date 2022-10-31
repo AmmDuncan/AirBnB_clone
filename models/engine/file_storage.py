@@ -14,12 +14,16 @@ class FileStorage:
 
     def new(self, obj):
         """Add new object to internal objects list"""
-        key_name = f"{obj['__class__']}.{obj['id']}"
+        obj_dict = obj.to_dict()
+        key_name = f"{obj_dict['__class__']}.{obj_dict['id']}"
         self.__objects[key_name] = obj
 
     def save(self):
         """Serialize objects to the JSON file"""
-        serialized = json.dumps(self.__objects)
+        dict_objects = {}
+        for key in self.__objects.keys():
+            dict_objects[key] = self.__objects[key].to_dict()
+        serialized = json.dumps(dict_objects)
         with open(self.__file_path, 'w') as file:
             file.write(serialized)
 
@@ -33,7 +37,8 @@ class FileStorage:
     def reload(self):
         """Deserialize json file to objects"""
         try:
+            from models.base_model import BaseModel
             with open(self.__file_path, 'r') as file:
-                self.__objects = json.loads(file.read())
+                self.__objects = json.loads(file.read(), cls=BaseModel)
         except FileNotFoundError:
             pass

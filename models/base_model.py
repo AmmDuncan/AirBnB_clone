@@ -3,6 +3,7 @@
 Base Class Module: defines BaseModel class on which all other
 classes will be built
 """
+import json
 import uuid
 from datetime import datetime
 
@@ -21,7 +22,7 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         if not args and not kwargs:
-            storage.new(self.to_dict())
+            storage.new(self)
         for key, value in kwargs.items():
             if key == 'id':
                 self.id = value
@@ -39,6 +40,14 @@ class BaseModel:
         obj_dict = self.__dict__
         return f"[{classname}] ({id}) {obj_dict}"
 
+    def decode(self, s):
+        """Decode json to instance"""
+        dicts = json.loads(s)
+        instances = {}
+        for key in dicts.keys():
+            instances[key] = BaseModel(**dicts[key])
+        return instances
+
     def save(self):
         """Update updated at instance attribute"""
         self.updated_at = datetime.now()
@@ -53,3 +62,6 @@ class BaseModel:
         inst_obj["updated_at"] = datetime.strftime(
             inst_obj["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
         return inst_obj
+
+    def __setitem__(self, key, value):
+        self.__setattr__(key, value)
