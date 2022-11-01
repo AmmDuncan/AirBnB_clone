@@ -4,11 +4,16 @@ import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 def getClasses():
     """Get available classes"""
-    classes = [BaseModel, User]
+    classes = [BaseModel, User, State, City, Amenity, Place, Review]
     available_classes = [*map(lambda c: c.__name__, classes)]
     class_dict = {name: classes[index]
                   for (index, name) in enumerate(available_classes)}
