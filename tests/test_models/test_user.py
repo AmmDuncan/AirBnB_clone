@@ -5,7 +5,7 @@ import unittest
 from models.user import User
 
 
-class TestUserModel(unittest.TestCase):
+class TestUser(unittest.TestCase):
     """Test Suite for User Model"""
 
     def test_class_attributes(self):
