@@ -148,7 +148,6 @@ def handleUpdate(str_params):
 
 def handleUpdateDict(str_params):
     """Update a field on an instance in storage"""
-    print(str_params)
     params = re.findall(r"\"[^\"]+\"|[^\s]+|\{[^\}]+\}", str_params)
     params = [*map(lambda w: w.strip('"'), params)]
     classFound = checkClass(params)
@@ -156,4 +155,6 @@ def handleUpdateDict(str_params):
         instance = checkInstance(params)
         if instance:
             json_str = re.findall(r"\{[^\}]+\}", str_params)[0]
-            instance.update(**json.loads(json_str))
+            instance.update(
+                **json.loads(re.sub(r"(\')", "\"", json_str)))
+            instance.save()
