@@ -81,7 +81,7 @@ def handleCreate(classname=None):
 
 def handleShow(str_params):
     """Show instance of a Model if exists"""
-    params = str_params.split(" ")
+    params = re.findall(r"\"[^\"]+\"|[^\s]+", str_params)
     classFound = checkClass(params)
     if classFound:
         instance = checkInstance(params)
@@ -91,7 +91,7 @@ def handleShow(str_params):
 
 def handleDestroy(str_params):
     """Show instance of a Model if exists"""
-    params = str_params.split(" ")
+    params = re.findall(r"\"[^\"]+\"|[^\s]+", str_params)
     classFound = checkClass(params)
     if classFound:
         instance = checkInstance(params)
