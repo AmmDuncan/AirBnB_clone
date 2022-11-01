@@ -120,6 +120,19 @@ def handleAll(str_params):
     print(instance_strings)
 
 
+def handleCount(str_params):
+    """Count all instances [of a class]"""
+    dicts_dict = storage.all()
+    instances = dicts_dict.values()
+    if str_params:
+        classFound = getClass(str_params.split(" ")[0])
+        if not classFound:
+            return
+        instances = [*filter(lambda d: d.__class__.__name__
+                             == str_params, instances)]
+    print(len(instances))
+
+
 def handleUpdate(str_params):
     """Update a field on an instance in storage"""
     params = re.findall(r"\"[^\"]+\"|[^\s]+", str_params)

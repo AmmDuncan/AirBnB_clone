@@ -4,6 +4,7 @@ import cmd
 from handlers.base_handlers import (
     getClasses,
     handleAll,
+    handleCount,
     handleCreate,
     handleDestroy,
     handleShow,
@@ -55,11 +56,18 @@ class HBNBCommand(cmd.Cmd):
         """
         handleUpdate(str_params)
 
+    def do_count(self, str_params):
+        """count [<class name>] {Show count instances [of a class]}
+        """
+        handleCount(str_params)
+
     def precmd(self, line: str) -> str:
         [_, class_names, _] = getClasses()
         for classname in class_names:
-            if f"{classname}.all()" == line:
+            if line == f"{classname}.all()":
                 return super().precmd(f'all {classname}')
+            if line == f"{classname}.count()":
+                return super().precmd(f"count {classname}")
         return super().precmd(line)
 
 
