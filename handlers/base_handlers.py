@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Contains Handlers for Console Actions"""
+import json
 import re
 from models import storage
 from models.base_model import BaseModel
@@ -143,3 +144,16 @@ def handleUpdate(str_params):
         if instance and checkAttribute(params) and checkValue(params):
             instance[params[2]] = params[3]
             instance.save()
+
+
+def handleUpdateDict(str_params):
+    """Update a field on an instance in storage"""
+    print(str_params)
+    params = re.findall(r"\"[^\"]+\"|[^\s]+|\{[^\}]+\}", str_params)
+    params = [*map(lambda w: w.strip('"'), params)]
+    classFound = checkClass(params)
+    if classFound:
+        instance = checkInstance(params)
+        if instance:
+            json_str = re.findall(r"\{[^\}]+\}", str_params)[0]
+            instance.update(**json.loads(json_str))

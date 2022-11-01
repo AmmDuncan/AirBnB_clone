@@ -63,6 +63,12 @@ class BaseModel:
             inst_obj["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
         return inst_obj
 
+    def update(self, *args, **kwargs):
+        """Update instance with dict"""
+        for key, value in kwargs.items():
+            if key != '__class__':
+                self[key] = value
+
     def __setitem__(self, key, value):
         """Set item on instance"""
         self.__setattr__(key, value)

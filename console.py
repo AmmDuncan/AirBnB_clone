@@ -9,7 +9,8 @@ from handlers.base_handlers import (
     handleCreate,
     handleDestroy,
     handleShow,
-    handleUpdate
+    handleUpdate,
+    handleUpdateDict
 )
 
 
@@ -57,6 +58,10 @@ class HBNBCommand(cmd.Cmd):
         """
         handleUpdate(str_params)
 
+    def do_dupdate(self, str_params):
+        """update <class name> <id> <dict with values>"""
+        handleUpdateDict(str_params)
+
     def do_count(self, str_params):
         """count [<class name>] {Show count instances [of a class]}
         """
@@ -70,6 +75,7 @@ class HBNBCommand(cmd.Cmd):
             destroy_pattern = r"^{}\.destroy\(.*\)$".format(classname)
             update_pattern = r"^{}\.update\(.*\)$".format(classname)
             args_pattern = r"\((.*)\)"
+            dict_pattern = r"\{[^\}]+\}"
             # args
             args = re.findall(args_pattern, line)
             if len(args):
@@ -96,10 +102,13 @@ class HBNBCommand(cmd.Cmd):
                 attr_value = ""
                 if has_args:
                     id = args[0].strip('"')
-                if len(args) > 1:
+                if re.search(dict_pattern, line):
+                    return super().precmd(
+                        f"dupdate {classname} {id} {re.findall(dict_pattern, line)[0]}")
+                elif len(args) > 1:
                     attr_name = args[1].strip('"')
-                if len(args) > 2:
-                    attr_value = args[2].strip('"')
+                    if len(args) > 2:
+                        attr_value = args[2].strip('"')
                 print(args)
                 return super().precmd(
                     f"update {classname} {id} {attr_name} {attr_value}")
