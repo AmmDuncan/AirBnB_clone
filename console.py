@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Entry point for AirBnB clone backend"""
 import cmd
+import re
 from handlers.base_handlers import (
     getClasses,
     handleAll,
@@ -64,10 +65,35 @@ class HBNBCommand(cmd.Cmd):
     def precmd(self, line: str) -> str:
         [_, class_names, _] = getClasses()
         for classname in class_names:
+            # patterns
+            show_pattern = r"^{}\.show\(.+\)$".format(classname)
+            destroy_pattern = r"^{}\.destroy\(.+\)$".format(classname)
+            update_pattern = r"^{}\.update\(.+\)$".format(classname)
+            args_pattern = r"\(([^,]+)\)"
+            # args
+            args = re.findall(args_pattern, line)
+            has_args = len(args) > 0
+            # checks
             if line == f"{classname}.all()":
                 return super().precmd(f'all {classname}')
             if line == f"{classname}.count()":
                 return super().precmd(f"count {classname}")
+            if re.search(show_pattern, line) and has_args:
+                arg = args[0]
+                return super().precmd(f"show {classname} {arg}")
+            if re.search(destroy_pattern, line) and has_args:
+                arg = args[0]
+                return super().precmd(f"destroy {classname} {arg}")
+            if re.search(update_pattern, line) and has_args:
+                id = args[0]
+                attr_name = ""
+                attr_value = ""
+                if len(args) > 1:
+                    attr_name = args[1]
+                if len(args) > 2:
+                    attr_value = args[2]
+                return super().precmd(
+                    f"destroy {classname} {id} {attr_name} {attr_value}")
         return super().precmd(line)
 
 
