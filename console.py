@@ -83,23 +83,23 @@ class HBNBCommand(cmd.Cmd):
             if re.search(show_pattern, line):
                 arg = ""
                 if has_args:
-                    arg = args[0]
+                    arg = args[0].strip('"')
                 return super().precmd(f"show {classname} {arg}")
             if re.search(destroy_pattern, line):
                 arg = ""
                 if has_args:
-                    arg = args[0]
+                    arg = args[0].strip('"')
                     return super().precmd(f"destroy {classname} {arg}")
             if re.search(update_pattern, line):
                 id = ""
                 attr_name = ""
                 attr_value = ""
                 if has_args:
-                    id = args[0]
+                    id = args[0].strip('"')
                 if len(args) > 1:
-                    attr_name = args[1]
+                    attr_name = args[1].strip('"')
                 if len(args) > 2:
-                    attr_value = args[2]
+                    attr_value = args[2].strip('"')
                 print(args)
                 return super().precmd(
                     f"update {classname} {id} {attr_name} {attr_value}")
