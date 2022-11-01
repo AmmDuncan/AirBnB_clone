@@ -17,6 +17,6 @@ class TestFileStorage(unittest.TestCase):
         storage_inst.save()
 
         with open(filename, 'r') as file:
-            self.asset(file.read(), "{}")
+            self.assertEqual(file.read(), "{}")
 
         os.remove(filename)
