@@ -10,11 +10,11 @@ class User(BaseModel):
 
     def __init__(self, *args, **kwargs):
         """Initialize User object"""
-        super().__init__(*args, **kwargs)
         self.email = ""
         self.password = ""
         self.first_name = ""
         self.last_name = ""
+        super().__init__(*args, **kwargs)
 
     def decode(self, s):
         """Decode json to instance"""
