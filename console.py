@@ -2,6 +2,7 @@
 """Entry point for AirBnB clone backend"""
 import cmd
 from handlers.base_handlers import (
+    getClasses,
     handleAll,
     handleCreate,
     handleDestroy,
@@ -53,6 +54,13 @@ class HBNBCommand(cmd.Cmd):
         """update <class name> <id> <field> "<value>" {Update an instance}
         """
         handleUpdate(str_params)
+
+    def precmd(self, line: str) -> str:
+        [_, class_names, _] = getClasses()
+        for classname in class_names:
+            if f"{classname}.all()" == line:
+                return super().precmd(f'all {classname}')
+        return super().precmd(line)
 
 
 if __name__ == '__main__':
