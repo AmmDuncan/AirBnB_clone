@@ -66,34 +66,43 @@ class HBNBCommand(cmd.Cmd):
         [_, class_names, _] = getClasses()
         for classname in class_names:
             # patterns
-            show_pattern = r"^{}\.show\(.+\)$".format(classname)
-            destroy_pattern = r"^{}\.destroy\(.+\)$".format(classname)
-            update_pattern = r"^{}\.update\(.+\)$".format(classname)
-            args_pattern = r"\(([^,]+)\)"
+            show_pattern = r"^{}\.show\(.*\)$".format(classname)
+            destroy_pattern = r"^{}\.destroy\(.*\)$".format(classname)
+            update_pattern = r"^{}\.update\(.*\)$".format(classname)
+            args_pattern = r"\((.*)\)"
             # args
             args = re.findall(args_pattern, line)
+            if len(args):
+                args = re.split(r",|,\s", args[0])
             has_args = len(args) > 0
             # checks
             if line == f"{classname}.all()":
                 return super().precmd(f'all {classname}')
             if line == f"{classname}.count()":
                 return super().precmd(f"count {classname}")
-            if re.search(show_pattern, line) and has_args:
-                arg = args[0]
+            if re.search(show_pattern, line):
+                arg = ""
+                if has_args:
+                    arg = args[0]
                 return super().precmd(f"show {classname} {arg}")
-            if re.search(destroy_pattern, line) and has_args:
-                arg = args[0]
-                return super().precmd(f"destroy {classname} {arg}")
-            if re.search(update_pattern, line) and has_args:
-                id = args[0]
+            if re.search(destroy_pattern, line):
+                arg = ""
+                if has_args:
+                    arg = args[0]
+                    return super().precmd(f"destroy {classname} {arg}")
+            if re.search(update_pattern, line):
+                id = ""
                 attr_name = ""
                 attr_value = ""
+                if has_args:
+                    id = args[0]
                 if len(args) > 1:
                     attr_name = args[1]
                 if len(args) > 2:
                     attr_value = args[2]
+                print(args)
                 return super().precmd(
-                    f"destroy {classname} {id} {attr_name} {attr_value}")
+                    f"update {classname} {id} {attr_name} {attr_value}")
         return super().precmd(line)
 
 
